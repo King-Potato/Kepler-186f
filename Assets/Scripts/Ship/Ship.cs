@@ -33,4 +33,10 @@ public class Ship : MonoBehaviour
     GetComponent<Transform>().position = new Vector3(Random.Range(RespawnBoundaries.x, RespawnBoundaries.y), Random.Range(RespawnBoundaries.x, RespawnBoundaries.y), 0.0f);
     m_health = StartingHealth;
   }
+
+  public void Kill()
+  {
+    Debug.Log("Player been killed.");
+    Respawn();
+  }
 }
