@@ -1,6 +1,8 @@
-﻿public interface IWeapon
-{
-  void Fire();
+﻿using UnityEngine;
 
-  float GetDamage();
+public abstract class IWeapon : MonoBehaviour
+{
+  public abstract void Fire();
+
+  public abstract float GetDamage();
 }
