@@ -4,15 +4,25 @@ public class Ship : MonoBehaviour
 {
   public IWeapon Weapon;
   public float StartingHealth = 100.0f;
-  float m_health;
-  ushort m_score;
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
 
+  float m_health;
+  ushort m_score;
+
   void Start()
   {
     m_health = StartingHealth;
+  }
+
+  void OnCollisionEnter2D(Collision2D collider)
+  {
+    if(collider.gameObject.tag == "Projectile")
+    {
+      m_health -= collider.gameObject.GetComponent<Projectile>().Damage;
+      Destroy(collider.gameObject);
+    }
   }
 
   void Update()
