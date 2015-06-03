@@ -31,6 +31,9 @@ public class Ship : MonoBehaviour
   void Respawn()
   {
     GetComponent<Transform>().position = new Vector3(Random.Range(RespawnBoundaries.x, RespawnBoundaries.y), Random.Range(RespawnBoundaries.x, RespawnBoundaries.y), 0.0f);
+    GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+    GetComponent<Rigidbody2D>().rotation = 0.0f;
     m_health = StartingHealth;
+
   }
 }

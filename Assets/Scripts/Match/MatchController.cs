@@ -8,7 +8,7 @@ public class MatchController : MonoBehaviour
   public bool Active;
   public Text TimeLeftText; 
 
-  public float m_TimeRemaining;
+  float m_TimeRemaining;
 
   void Start()
   {
