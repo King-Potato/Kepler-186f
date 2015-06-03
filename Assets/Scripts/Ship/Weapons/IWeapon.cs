@@ -2,5 +2,5 @@
 
 public abstract class IWeapon : MonoBehaviour
 {
-  public abstract void Fire();
+  public abstract bool Fire(out float knockback);
 }
