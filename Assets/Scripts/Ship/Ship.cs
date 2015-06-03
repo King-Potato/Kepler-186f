@@ -4,41 +4,41 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ship : MonoBehaviour
 {
-  private class Team
+  private class team
   {
-    public static List<Team> teams = new List<Team>();
+    public static List<team> m_teams = new List<team>();
     public List<Ship> ships;
-    private const int teamSize = 2;
+    private const int m_teamSize = 2;
 
-    Team()
+    team()
     {
       ships = new List<Ship>();
     }
 
-    Team(List<Ship> ships)
+    team(List<Ship> ships)
     {
       this.ships = ships;
     }
 
-    Team(Ship ship)
+    team(Ship ship)
     {
       this.ships = new List<Ship>();
       this.ships.Add(ship);
-      ship.SetTeam(this);
+      ship.Setteam(this);
     }
 
     public static void AddPlayer(Ship ship)
     {
-      if (teams.Count == 0)
-        teams.Add(new Team());
-      Team team = teams[teams.Count - 1];
-      if (team.ships.Count >= teamSize)
+      if (m_teams.Count == 0)
+        m_teams.Add(new team());
+      team m_team = m_teams[m_teams.Count - 1];
+      if (m_team.ships.Count >= m_teamSize)
       {
-        team = new Team(ship);
-        teams.Add(team);
+        m_team = new team(ship);
+        m_teams.Add(m_team);
       }
       else
-        team.ships.Add(ship);
+        m_team.ships.Add(ship);
     }
   }
   public IWeapon Weapon;
@@ -49,20 +49,20 @@ public class Ship : MonoBehaviour
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
-  private Team team;
+  private team m_team;
 
-  float m_health;
+  public float Health;
   ushort m_score;
 
   Rigidbody2D m_rigidBody;
 
   void Start()
   {
-    m_health = StartingHealth;
+    Health = StartingHealth;
 
     PlayerName = gameObject.name;
     m_rigidBody = GetComponent<Rigidbody2D>();
-    Team.AddPlayer(this);
+    team.AddPlayer(this);
   }
 
   void OnCollisionEnter2D(Collision2D collider)
@@ -71,16 +71,16 @@ public class Ship : MonoBehaviour
     {
       Debug.Log("Hit by projectile");
       var proj = collider.gameObject.GetComponent<Projectile>();
-      m_health -= proj.Damage;
+      Health -= proj.Damage;
       Instantiate(proj.DestroyFX, collider.transform.position, collider.transform.rotation);
 
       Ship ship = collider.transform.GetComponent<Ship>();
       bool isFriend = false;
       if (ship)
       {
-        for (int i = 0; i < team.ships.Count; i++)
+        for (int i = 0; i < m_team.ships.Count; i++)
         {
-          if (team.ships[i] == ship)
+          if (m_team.ships[i] == ship)
           {
             isFriend = true;
             break;
@@ -88,11 +88,11 @@ public class Ship : MonoBehaviour
         }
       }
       if (isFriend)
-        m_health -= collider.gameObject.GetComponent<Projectile>().Damage;
+        Health -= collider.gameObject.GetComponent<Projectile>().Damage;
 
       Destroy(collider.gameObject);
 
-      Debug.Log("New Health" + m_health);
+      Debug.Log("New Health" + Health);
     }
     else
     {
@@ -102,15 +102,15 @@ public class Ship : MonoBehaviour
 
       if (impactMagnitude > ImpactDamageThreshold)
       {
-        m_health -= impactMagnitude * ImpactDamageMultiplier;
-        Debug.Log("New Health" + m_health);
+        Health -= impactMagnitude * ImpactDamageMultiplier;
+        Debug.Log("New Health" + Health);
       }
     }
   }
 
   void Update()
   {
-    if (m_health <= 0.0f)
+    if (Health <= 0.0f)
     {
       Respawn();
       return;
@@ -131,7 +131,7 @@ public class Ship : MonoBehaviour
     GetComponent<Transform>().position = new Vector3(Random.Range(RespawnXBoundaries.x, RespawnXBoundaries.y), Random.Range(RespawnYBoundaries.x, RespawnYBoundaries.y), 0.0f);
     GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
     GetComponent<Rigidbody2D>().rotation = 0.0f;
-    m_health = StartingHealth;
+    Health = StartingHealth;
   }
 
   public void Kill()
@@ -140,8 +140,8 @@ public class Ship : MonoBehaviour
     Respawn();
   }
 
-  private void SetTeam(Team team)
+  private void Setteam(team m_team)
   {
-    this.team = team;
+    this.m_team = m_team;
   }
 }
