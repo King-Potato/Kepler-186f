@@ -1,16 +1,52 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ship : MonoBehaviour
 {
+  private class Team
+	{
+		public static List<Team> teams = new List<Team>();
+		public List<Ship> ships;
+		private const int teamSize = 2;
+
+		Team()
+		{
+			ships = new List<Ship>();
+		}
+
+		Team (List<Ship> ships)
+		{
+			this.ships = ships;
+		}
+
+		Team (Ship ship)
+		{
+			this.ships = new List<Ship>();
+			this.ships.Add(ship);
+			ship.SetTeam(this);
+		}
+
+		public static void AddPlayer(Ship ship)
+		{
+			if (teams.Count == 0)
+				teams.Add(new Team());
+			Team team = teams[teams.Count - 1];
+			if (team.ships.Count >= teamSize)
+			{
+				team = new Team(ship);
+				teams.Add(team);
+			}
+			else
+				team.ships.Add(ship);
+		}
+	}
   public IWeapon Weapon;
-  public string PlayerName;
   public float StartingHealth = 100.0f;
-  public float ImpactDamageThreshold = 10.0f;
-  public float ImpactDamageMultiplier = 2.0f;
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
+  private Team team;
 
   float m_health;
   ushort m_score;
@@ -20,8 +56,8 @@ public class Ship : MonoBehaviour
   void Start()
   {
     m_health = StartingHealth;
-    PlayerName = gameObject.name;
     m_rigidBody = GetComponent<Rigidbody2D>();
+	Team.AddPlayer(this);
   }
 
   void OnCollisionEnter2D(Collision2D collider)
@@ -29,7 +65,21 @@ public class Ship : MonoBehaviour
     if (collider.gameObject.tag == "Projectile")
     {
       Debug.Log("Hit by projectile");
-      m_health -= collider.gameObject.GetComponent<Projectile>().Damage;
+	  Ship ship = collider.transform.GetComponent<Ship>();
+	  bool isFriend = false;
+	  if (ship)
+	  {
+		for (int i = 0; i < team.ships.Count; i++)
+		{
+		  if (team.ships[i] == ship)
+		  {
+			isFriend = true;
+			break;
+		  }
+		}
+	  }
+	  if (isFriend)
+        m_health -= collider.gameObject.GetComponent<Projectile>().Damage;
       Destroy(collider.gameObject);
       Debug.Log("New Health" + m_health);
     }
@@ -39,9 +89,9 @@ public class Ship : MonoBehaviour
 
       Debug.Log("Impact Magnitude " + impactMagnitude);
 
-      if (impactMagnitude > ImpactDamageThreshold)
+      if (impactMagnitude > 10.0f)
       {
-        m_health -= impactMagnitude * ImpactDamageMultiplier;
+        m_health -= impactMagnitude;
         Debug.Log("New Health" + m_health);
       }
     }
@@ -77,5 +127,10 @@ public class Ship : MonoBehaviour
   {
     Debug.Log("Player been killed.");
     Respawn();
+  }
+
+  private void SetTeam(Team team)
+  {
+    this.team = team;
   }
 }
