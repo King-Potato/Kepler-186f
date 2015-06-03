@@ -4,7 +4,10 @@
 public class Ship : MonoBehaviour
 {
   public IWeapon Weapon;
+  public string PlayerName;
   public float StartingHealth = 100.0f;
+  public float ImpactDamageThreshold = 10.0f;
+  public float ImpactDamageMultiplier = 2.0f;
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
@@ -17,6 +20,7 @@ public class Ship : MonoBehaviour
   void Start()
   {
     m_health = StartingHealth;
+    PlayerName = gameObject.name;
     m_rigidBody = GetComponent<Rigidbody2D>();
   }
 
@@ -35,9 +39,9 @@ public class Ship : MonoBehaviour
 
       Debug.Log("Impact Magnitude " + impactMagnitude);
 
-      if (impactMagnitude > 10.0f)
+      if (impactMagnitude > ImpactDamageThreshold)
       {
-        m_health -= impactMagnitude;
+        m_health -= impactMagnitude * ImpactDamageMultiplier;
         Debug.Log("New Health" + m_health);
       }
     }
