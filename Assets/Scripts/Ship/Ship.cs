@@ -22,7 +22,7 @@ public class Ship : MonoBehaviour
       return;
     }
 
-    if (Input.GetButtonDown(FireInputName))
+    if (Input.GetButton(FireInputName))
     {
       Weapon.Fire();
     }
