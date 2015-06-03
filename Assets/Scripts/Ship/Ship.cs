@@ -24,6 +24,7 @@ public class Ship : MonoBehaviour
 		{
 			this.ships = new List<Ship>();
 			this.ships.Add(ship);
+			ship.SetTeam(this);
 		}
 
 		public static void AddPlayer(Ship ship)
@@ -45,6 +46,7 @@ public class Ship : MonoBehaviour
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
+  private Team team;
 
   float m_health;
   ushort m_score;
@@ -63,7 +65,21 @@ public class Ship : MonoBehaviour
     if (collider.gameObject.tag == "Projectile")
     {
       Debug.Log("Hit by projectile");
-      m_health -= collider.gameObject.GetComponent<Projectile>().Damage;
+	  Ship ship = collider.transform.GetComponent<Ship>();
+	  bool isFriend = false;
+	  if (ship)
+	  {
+		for (int i = 0; i < team.ships.Count; i++)
+		{
+		  if (team.ships[i] == ship)
+		  {
+			isFriend = true;
+			break;
+		  }
+		}
+	  }
+	  if (isFriend)
+        m_health -= collider.gameObject.GetComponent<Projectile>().Damage;
       Destroy(collider.gameObject);
       Debug.Log("New Health" + m_health);
     }
@@ -111,5 +127,10 @@ public class Ship : MonoBehaviour
   {
     Debug.Log("Player been killed.");
     Respawn();
+  }
+
+  private void SetTeam(Team team)
+  {
+    this.team = team;
   }
 }
