@@ -36,4 +36,10 @@ public class Ship : MonoBehaviour
     m_health = StartingHealth;
 
   }
+
+  public void Kill()
+  {
+    Debug.Log("Player been killed.");
+    Respawn();
+  }
 }
