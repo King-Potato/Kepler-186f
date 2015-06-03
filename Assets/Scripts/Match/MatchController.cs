@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MatchController : MonoBehaviour
 {
   public float StartingTime;
   public bool Active;
+  public Text TimeLeftText; 
 
-  float m_TimeRemaining;
+  public float m_TimeRemaining;
 
   void Start()
   {
@@ -29,6 +31,8 @@ public class MatchController : MonoBehaviour
         Active = false;
         Restart();
       }
+
+      TimeLeftText.text = "Time Left: " + m_TimeRemaining.ToString();
     }
   }
 
