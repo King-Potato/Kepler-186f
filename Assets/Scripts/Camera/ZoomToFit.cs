@@ -11,11 +11,6 @@ public class ZoomToFit : MonoBehaviour
     
     void FixedUpdate()
     {
-        // Get average position.
-        /*Vector3 center = Vector3.zero;
-        foreach (var t in Targets) center += t.position;
-        center /= Targets.Count;*/
-
         // Get bounds containing all targets.
         Rect bounds = new Rect();
 

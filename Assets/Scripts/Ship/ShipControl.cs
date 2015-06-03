@@ -26,12 +26,7 @@ public class ShipControl : MonoBehaviour
     m_particleSystem = transform.FindChild("Thruster Particles").GetComponent<ParticleSystem>();
     if (m_particleSystem) m_particleNormalSpeed = m_particleSystem.startSpeed;
   }
-
-  void OnDrawGizmos()
-  {
-    Debug.DrawLine(transform.position, transform.position + transform.up);
-  }
-
+  
   void FixedUpdate()
   {
     float thrust = Mathf.Clamp01(Input.GetAxis(ThrustInput));
