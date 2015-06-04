@@ -11,9 +11,9 @@ public class Ship : Damageable
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
   public GameObject ExplosionEffect;
-  
+
   ushort m_score;
-  int m_lastHit;
+  int m_lastHit = -1;
   float m_respawnTimer;
 
   Rigidbody2D m_rigidBody;
@@ -33,7 +33,10 @@ public class Ship : Damageable
   {
     if (Health <= 0.0f)
     {
-      ScoreManager.ModifyScore(m_lastHit, ScorePerKill);
+      if (m_lastHit != -1)
+      {
+        ScoreManager.ModifyScore(m_lastHit, ScorePerKill);
+      }
     }
 
     var proj = collision.gameObject.GetComponent<Projectile>();
@@ -70,7 +73,7 @@ public class Ship : Damageable
 
       return;
     }
-    
+
     if (Input.GetButton(FireInputName))
     {
       float knockback = 0.0f;
@@ -111,7 +114,7 @@ public class Ship : Damageable
     StartRespawn();
 
     var renderers = GetComponentsInChildren<Renderer>();
-    foreach(var r in renderers)
+    foreach (var r in renderers)
     {
       r.material.color = new Color(0.2f, 0.2f, 0.2f);
     }
