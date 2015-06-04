@@ -4,16 +4,21 @@ using System.Collections.Generic;
 [RequireComponent(typeof(BoxCollider2D))]
 public class AsteroidEmitter : MonoBehaviour
 {
-	public List<Rigidbody2D> asteroids;
+	public List<Rigidbody2D> Asteroids;
 	private static int poolSize;
-	public int asteroidCount = 10;
+	public int AsteroidCount = 10;
   
+  public static void DecreasePoolSize()
+  {
+    poolSize -= 1;
+  }
+
 	void Update()
   {
-		if (poolSize < asteroidCount)
+		if (poolSize < AsteroidCount)
 		{
 			Bounds bounds = transform.GetComponent<BoxCollider2D>().bounds;
-      Rigidbody2D asteroid = Instantiate(asteroids[Random.Range(0, asteroids.Count)]);
+      Rigidbody2D asteroid = Instantiate(Asteroids[Random.Range(0, Asteroids.Count)]);
 			asteroid.transform.position = new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), 0.0f);
 
       float scale = Random.Range(3.0f, 4.0f);
