@@ -40,5 +40,8 @@ public class Asteroid : Damageable
       int idx = Random.Range(0, Contents.Count);
       Instantiate(Contents[idx], transform.position, Quaternion.identity);
     }
+
+    var shake = Camera.main.GetComponent<Shake>();
+    shake.StartShake(0.4f, 0.5f);
   }
 }
