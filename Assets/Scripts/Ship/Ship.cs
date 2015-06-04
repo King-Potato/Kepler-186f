@@ -44,15 +44,18 @@ public class Ship : MonoBehaviour
   public IWeapon Weapon;
   public string PlayerName;
   public float StartingHealth = 100.0f;
+  public float Health;
   public float ImpactDamageThreshold = 10.0f;
   public float ImpactDamageMultiplier = 2.0f;
+  public float StartingRespawnTimer = 10.0f;
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
-  private team m_team;
 
-  public float Health;
+  bool m_dead;
   ushort m_score;
+  float m_respawnTimer;
+  team m_team;
 
   Rigidbody2D m_rigidBody;
 
@@ -61,6 +64,7 @@ public class Ship : MonoBehaviour
   void Start()
   {
     Health = StartingHealth;
+    m_respawnTimer = StartingRespawnTimer;
 
     PlayerName = gameObject.name;
     m_rigidBody = GetComponent<Rigidbody2D>();
@@ -69,9 +73,10 @@ public class Ship : MonoBehaviour
 
   void OnCollisionEnter2D(Collision2D collider)
   {
+    if (m_dead) return;
+
     if (collider.gameObject.tag == "Projectile")
     {
-      Debug.Log("Hit by projectile");
       var proj = collider.gameObject.GetComponent<Projectile>();
       Health -= proj.Damage;
       Instantiate(proj.DestroyFX, collider.transform.position, collider.transform.rotation);
@@ -93,30 +98,38 @@ public class Ship : MonoBehaviour
         Health -= collider.gameObject.GetComponent<Projectile>().Damage;
 
       Destroy(collider.gameObject);
-
-      Debug.Log("New Health" + Health);
     }
     else
     {
       var impactMagnitude = collider.relativeVelocity.magnitude;
 
-      Debug.Log("Impact Magnitude " + impactMagnitude);
-
       if (impactMagnitude > ImpactDamageThreshold)
       {
         Health -= impactMagnitude * ImpactDamageMultiplier;
-        Debug.Log("New Health" + Health);
       }
     }
   }
 
   void Update()
   {
-    if (Health <= 0.0f)
+    if (Health <= 0.0f && !m_dead)
     {
       Kill();
       return;
     }
+
+    if (m_dead)
+    {
+      if (GetComponent<ShipControl>().enabled) GetComponent<ShipControl>().enabled = false;
+
+      m_respawnTimer -= Time.deltaTime;
+
+      if (m_respawnTimer <= 0.0f)
+      {
+        Respawn();
+      }
+    }
+
 
     if (Input.GetButton(FireInputName))
     {
@@ -128,19 +141,26 @@ public class Ship : MonoBehaviour
     }
   }
 
+  void StartRespawn()
+  {
+    m_dead = true;
+  }
+
   void Respawn()
   {
     GetComponent<Transform>().position = new Vector3(Random.Range(RespawnXBoundaries.x, RespawnXBoundaries.y), Random.Range(RespawnYBoundaries.x, RespawnYBoundaries.y), 0.0f);
     GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
     GetComponent<Rigidbody2D>().rotation = 0.0f;
+    GetComponent<ShipControl>().enabled = true;
     Health = StartingHealth;
+    m_respawnTimer = StartingRespawnTimer;
+    m_dead = false;
   }
 
   public void Kill()
   {
-    Debug.Log("Player been killed.");
     ExplosionAudioSource.Play();
-    Respawn();
+    StartRespawn();
   }
 
   private void Setteam(team m_team)
