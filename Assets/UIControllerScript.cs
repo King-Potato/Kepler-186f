@@ -9,6 +9,11 @@ public class UIControllerScript : MonoBehaviour
 
   public Canvas ResultsUI;
 
+  void Start()
+  {
+    UpdateUIs();
+  }
+
   public void UpdateUIs()
   {
     switch (GameState.CurrentState)

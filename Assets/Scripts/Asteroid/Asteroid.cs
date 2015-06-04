@@ -11,6 +11,12 @@ public class Asteroid : Damageable
 
   public float DropChance = 0.5f;
 
+  public bool IsStartAsteroid = false;
+
+  public UIControllerScript UIController;
+
+  public MatchController MatchController;
+
   void Start()
   {
     base.Initialise();
@@ -43,5 +49,12 @@ public class Asteroid : Damageable
 
     var shake = Camera.main.GetComponent<Shake>();
     shake.StartShake(0.4f, 0.5f);
+
+    if(IsStartAsteroid)
+    {
+      GameState.CurrentState = GameState.State.Running;
+      UIController.UpdateUIs();
+      MatchController.Restart();
+    }
   }
 }
