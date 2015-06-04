@@ -4,6 +4,7 @@ using System.Collections;
 public class PickupScript : MonoBehaviour
 {
   public GameObject Weapon;
+	public Sprite Sprite;
 
   void OnTriggerEnter2D(Collider2D collider)
   {
@@ -17,6 +18,8 @@ public class PickupScript : MonoBehaviour
 
     var oldWeapon = ship.Weapon;
     ship.Weapon = weaponObject.GetComponent<IWeapon>();
+
+	UIIconUpdater.SetImage(ship, Sprite);
 
     Destroy(oldWeapon.gameObject);
     Destroy(gameObject);
