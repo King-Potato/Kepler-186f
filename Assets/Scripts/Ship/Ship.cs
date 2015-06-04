@@ -29,8 +29,13 @@ public class Ship : MonoBehaviour
     if (collider.gameObject.tag == "Projectile")
     {
       Debug.Log("Hit by projectile");
-      m_health -= collider.gameObject.GetComponent<Projectile>().Damage;
+
+      var proj = collider.gameObject.GetComponent<Projectile>();
+      m_health -= proj.Damage;
+      Instantiate(proj.DestroyFX, collider.transform.position, collider.transform.rotation);
+
       Destroy(collider.gameObject);
+
       Debug.Log("New Health" + m_health);
     }
     else
