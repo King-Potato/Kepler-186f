@@ -1,8 +1,45 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ship : MonoBehaviour
 {
+  private class Team
+	{
+		public static List<Team> teams = new List<Team>();
+		public List<Ship> ships;
+		private const int teamSize = 2;
+
+		Team()
+		{
+			ships = new List<Ship>();
+		}
+
+		Team (List<Ship> ships)
+		{
+			this.ships = ships;
+		}
+
+		Team (Ship ship)
+		{
+			this.ships = new List<Ship>();
+			this.ships.Add(ship);
+		}
+
+		public static void AddPlayer(Ship ship)
+		{
+			if (teams.Count == 0)
+				teams.Add(new Team());
+			Team team = teams[teams.Count - 1];
+			if (team.ships.Count >= teamSize)
+			{
+				team = new Team(ship);
+				teams.Add(team);
+			}
+			else
+				team.ships.Add(ship);
+		}
+	}
   public IWeapon Weapon;
   public float StartingHealth = 100.0f;
   public string FireInputName;
@@ -18,6 +55,7 @@ public class Ship : MonoBehaviour
   {
     m_health = StartingHealth;
     m_rigidBody = GetComponent<Rigidbody2D>();
+	Team.AddPlayer(this);
   }
 
   void OnCollisionEnter2D(Collision2D collider)
