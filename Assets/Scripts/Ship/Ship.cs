@@ -51,6 +51,7 @@ public class Ship : MonoBehaviour
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
+  public GameObject ExplosionEffect;
 
   bool m_dead;
   ushort m_score;
@@ -181,6 +182,8 @@ public class Ship : MonoBehaviour
     {
       r.material.color = new Color(0.2f, 0.2f, 0.2f);
     }
+
+    Instantiate(ExplosionEffect, transform.position, transform.rotation);
   }
 
   private void Setteam(team m_team)
