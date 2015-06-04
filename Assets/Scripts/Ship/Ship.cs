@@ -117,5 +117,8 @@ public class Ship : Damageable
     }
 
     Instantiate(ExplosionEffect, transform.position, transform.rotation);
+
+    var shake = Camera.main.GetComponent<Shake>();
+    shake.StartShake(0.6f, 1.0f);
   }
 }
