@@ -13,9 +13,12 @@ class ProjectileWeapon : IWeapon
   float m_fireDelay;
   float m_fireTimer = 0.0f;
 
+  AudioSource m_audio;
+
   void Start()
   {
     m_fireDelay = 1.0f / FireRate;
+    m_audio = GetComponent<AudioSource>();
   }
 
   public override bool Fire(out float knockback)
@@ -25,6 +28,8 @@ class ProjectileWeapon : IWeapon
       knockback = 0.0f;
       return false;
     }
+
+    m_audio.Play();
     
     var projectile = (GameObject)Instantiate(Projectile, transform.position, transform.rotation);
     var body = projectile.GetComponent<Rigidbody2D>();
