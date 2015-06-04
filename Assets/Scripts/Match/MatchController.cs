@@ -10,6 +10,8 @@ public class MatchController : MonoBehaviour
 
   float m_TimeRemaining;
 
+  public UIControllerScript UIController;
+
   void Start()
   {
     Restart();
@@ -22,7 +24,7 @@ public class MatchController : MonoBehaviour
 
   void Update()
   {
-    if (Active)
+    if (Active && GameState.CurrentState == GameState.State.Running)
     {
       m_TimeRemaining -= Time.deltaTime;
 
@@ -30,6 +32,7 @@ public class MatchController : MonoBehaviour
       {
         Active = false;
         GameState.CurrentState = GameState.State.Results;
+        UIController.UpdateUIs();
       }
 
       TimeLeftText.text = "Time Left: " + m_TimeRemaining.ToString();

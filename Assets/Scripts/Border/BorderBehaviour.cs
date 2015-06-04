@@ -45,12 +45,14 @@ public class BorderBehaviour : MonoBehaviour
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D collider)
+	void OnCollisionEnter2D(Collision2D collider)
 	{
-		Ship ship = collider.GetComponent<Ship>();
-		if (!ship)
-			return;
+    if (collider.gameObject.tag == "Projectile")
+    {
+      var proj = collider.gameObject.GetComponent<Projectile>();
 
-		ship.Kill();
+      Instantiate(proj.DestroyFX, collider.transform.position, collider.transform.rotation);
+      Destroy(proj.gameObject);
+    }
 	}
 }

@@ -13,6 +13,11 @@ public class AsteroidEmitter : MonoBehaviour
     poolSize -= 1;
   }
 
+  void Start()
+  {
+    poolSize = 0;
+  }
+
 	void Update()
   {
 		if (poolSize < AsteroidCount)
