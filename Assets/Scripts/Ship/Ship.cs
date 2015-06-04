@@ -51,6 +51,7 @@ public class Ship : MonoBehaviour
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
+  public GameObject ExplosionEffect;
 
   bool m_dead;
   ushort m_score;
@@ -168,6 +169,7 @@ public class Ship : MonoBehaviour
   {
     ExplosionAudioSource.Play();
     StartRespawn();
+    Instantiate(ExplosionEffect, transform.position, transform.rotation);
   }
 
   private void Setteam(team m_team)
