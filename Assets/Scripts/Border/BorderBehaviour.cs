@@ -17,7 +17,7 @@ public class BorderBehaviour : MonoBehaviour
 		LineRenderer lines = gameObject.AddComponent<LineRenderer>();
 		lines.material = new Material(Shader.Find("Particles/Additive"));
 		lines.SetColors(Color.red, Color.red);
-		lines.SetWidth(0.04f, 0.04f);
+		lines.SetWidth(0.4f, 0.4f);
 		lines.SetVertexCount(collider.pointCount);
 
         for (uint i = 0; i < matrices.Length; i++)
