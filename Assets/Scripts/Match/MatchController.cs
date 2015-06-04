@@ -20,6 +20,7 @@ public class MatchController : MonoBehaviour
   public void Restart()
   {
     m_TimeRemaining = StartingTime;
+    ScoreManager.Reset();
   }
 
   void Update()
