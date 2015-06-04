@@ -160,6 +160,7 @@ public class Ship : MonoBehaviour
     GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
     GetComponent<Rigidbody2D>().rotation = 0.0f;
     GetComponent<ShipControl>().enabled = true;
+    GetComponent<ShipControl>().StartAll();
 
     var renderers = GetComponentsInChildren<Renderer>();
     foreach (var r in renderers)
