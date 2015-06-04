@@ -26,14 +26,12 @@ class ProjectileWeapon : IWeapon
     var body = projectile.GetComponent<Rigidbody2D>();
     body.velocity = transform.up * ProjectileSpeed;
 
+    var proj = projectile.GetComponent<Projectile>();
+    proj.Damage = ProjectileDamage;
+
     m_fireTimer = m_fireDelay;
   }
-
-  public override float GetDamage()
-  {
-    return ProjectileDamage;
-  }
-
+  
   void Update()
   {
     if(m_fireTimer > 0.0f) m_fireTimer -= Time.deltaTime;
