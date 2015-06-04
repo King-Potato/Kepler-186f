@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Ship : MonoBehaviour
 {
   public IWeapon Weapon;
@@ -11,9 +12,12 @@ public class Ship : MonoBehaviour
   float m_health;
   ushort m_score;
 
+  Rigidbody2D m_rigidBody;
+
   void Start()
   {
     m_health = StartingHealth;
+    m_rigidBody = GetComponent<Rigidbody2D>();
   }
 
   void OnCollisionEnter2D(Collision2D collider)
@@ -35,7 +39,11 @@ public class Ship : MonoBehaviour
 
     if (Input.GetButton(FireInputName))
     {
-      Weapon.Fire();
+      float knockback = 0.0f;
+      if(Weapon.Fire(out knockback))
+      {
+        m_rigidBody.AddForce(-transform.up * knockback);
+      }
     }
   }
 

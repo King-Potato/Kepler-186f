@@ -18,9 +18,13 @@ class ProjectileWeapon : IWeapon
     m_fireDelay = 1.0f / FireRate;
   }
 
-  public override void Fire()
+  public override bool Fire(out float knockback)
   {
-    if (m_fireTimer > 0.0f) return;
+    if (m_fireTimer > 0.0f)
+    {
+      knockback = 0.0f;
+      return false;
+    }
     
     var projectile = (GameObject)Instantiate(Projectile, transform.position, transform.rotation);
     var body = projectile.GetComponent<Rigidbody2D>();
@@ -30,6 +34,10 @@ class ProjectileWeapon : IWeapon
     proj.Damage = ProjectileDamage;
 
     m_fireTimer = m_fireDelay;
+
+    knockback = 10.0f;
+
+    return true;
   }
   
   void Update()
