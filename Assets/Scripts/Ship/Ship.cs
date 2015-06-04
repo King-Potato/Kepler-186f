@@ -20,6 +20,8 @@ public class Ship : Damageable
 
   public AudioSource ExplosionAudioSource;
 
+  public int ID = -1;
+
   void Start()
   {
     Initialise();
