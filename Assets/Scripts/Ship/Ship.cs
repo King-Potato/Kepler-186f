@@ -4,20 +4,19 @@ public class Ship : MonoBehaviour
 {
   public IWeapon Weapon;
   public float StartingHealth = 100.0f;
-  public float Health;
-  public ushort Score;
+  float m_health;
+  ushort m_score;
   public string FireInputName;
   public Vector2 RespawnBoundaries;
 
-
   void Start()
   {
-    Health = StartingHealth;
+    m_health = StartingHealth;
   }
 
   void Update()
   {
-    if (Health <= 0.0f)
+    if (m_health <= 0.0f)
     {
       Respawn();
       return;
@@ -32,6 +31,6 @@ public class Ship : MonoBehaviour
   void Respawn()
   {
     GetComponent<Transform>().position = new Vector3(Random.Range(RespawnBoundaries.x, RespawnBoundaries.y), Random.Range(RespawnBoundaries.x, RespawnBoundaries.y), 0.0f);
-    Health = StartingHealth;
+    m_health = StartingHealth;
   }
 }
