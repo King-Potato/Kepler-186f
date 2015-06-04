@@ -39,8 +39,8 @@ class ProjectileWeapon : IWeapon
     proj.Damage = ProjectileDamage;
 
     m_fireTimer = m_fireDelay;
-
-    knockback = 10.0f;
+    
+    knockback = 1000.0f * body.mass;
 
     return true;
   }
