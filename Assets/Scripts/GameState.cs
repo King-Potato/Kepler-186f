@@ -9,6 +9,8 @@
 
   public static State CurrentState;
 
+  public static int Winner;
+
   static GameState()
   {
     CurrentState = State.ReadyToPlay;

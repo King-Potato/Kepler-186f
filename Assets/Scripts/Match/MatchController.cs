@@ -32,6 +32,15 @@ public class MatchController : MonoBehaviour
       if (m_TimeRemaining <= 0.0f)
       {
         Active = false;
+
+        int winner = -1;
+        int winningScore = 0;
+        for(int i = 0; i < 4; i++)
+        {
+          if (ScoreManager.GetScore(i) > winningScore) winner = i;
+        }
+
+        GameState.Winner = winner;
         GameState.CurrentState = GameState.State.Results;
         UIController.UpdateUIs();
       }
