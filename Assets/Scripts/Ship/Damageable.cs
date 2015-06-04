@@ -10,9 +10,14 @@ public class Damageable : MonoBehaviour
 
   protected bool m_dead;
 
-  protected virtual void Initialise()
+  protected void Initialise()
   {
     Health = StartingHealth;
+  }
+
+  protected virtual void OnCollision(Collision2D collision)
+  {
+
   }
 
   void OnCollisionEnter2D(Collision2D collider)
@@ -36,5 +41,7 @@ public class Damageable : MonoBehaviour
         Health -= impactMagnitude * ImpactDamageMultiplier;
       }
     }
+
+    OnCollision(collider);
   }
 }

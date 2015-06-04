@@ -6,6 +6,7 @@ public class Ship : Damageable
   public IWeapon Weapon;
   public string PlayerName;
   public float StartingRespawnTimer = 10.0f;
+  public int ScorePerKill = 1000;
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
@@ -20,13 +21,26 @@ public class Ship : Damageable
 
   void Start()
   {
-    base.Initialise();
+    Initialise();
     m_respawnTimer = StartingRespawnTimer;
 
     PlayerName = gameObject.name;
     m_rigidBody = GetComponent<Rigidbody2D>();
   }
-  
+
+  protected override void OnCollision(Collision2D collision)
+  {
+    var proj = collision.gameObject.GetComponent<Projectile>();
+    if (proj == null) return;
+
+    ScoreManager.ModifyScore(proj.FiredFrom, (int)proj.Damage);
+    
+    if (Health <= 0.0f)
+    {
+      ScoreManager.ModifyScore(proj.FiredFrom, ScorePerKill);
+    }
+  }
+
   void Update()
   {
     if (Health <= 0.0f && !m_dead)
