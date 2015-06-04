@@ -14,6 +14,21 @@ public class UIControllerScript : MonoBehaviour
     UpdateUIs();
   }
 
+  void Update()
+  {
+    if (GameState.CurrentState == GameState.State.Results)
+    {
+      if (Input.GetButtonDown("Fire0") ||
+        Input.GetButtonDown("Fire1") ||
+        Input.GetButtonDown("Fire2") ||
+        Input.GetButtonDown("Fire3"))
+      {
+        GameState.CurrentState = GameState.State.ReadyToPlay;
+        Application.LoadLevel(Application.loadedLevel);
+      }
+    }
+  }
+
   public void UpdateUIs()
   {
     switch (GameState.CurrentState)
