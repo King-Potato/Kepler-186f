@@ -159,6 +159,13 @@ public class Ship : MonoBehaviour
     GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
     GetComponent<Rigidbody2D>().rotation = 0.0f;
     GetComponent<ShipControl>().enabled = true;
+
+    var renderers = GetComponentsInChildren<Renderer>();
+    foreach (var r in renderers)
+    {
+      r.material.color = Color.white;
+    }
+
     Health = StartingHealth;
     m_respawnTimer = StartingRespawnTimer;
     m_dead = false;
@@ -168,6 +175,12 @@ public class Ship : MonoBehaviour
   {
     ExplosionAudioSource.Play();
     StartRespawn();
+
+    var renderers = GetComponentsInChildren<Renderer>();
+    foreach(var r in renderers)
+    {
+      r.material.color = new Color(0.2f, 0.2f, 0.2f);
+    }
   }
 
   private void Setteam(team m_team)
