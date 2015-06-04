@@ -26,6 +26,13 @@ public class ShipControl : MonoBehaviour
     if (m_particleSystem) m_particleNormalSpeed = m_particleSystem.startSpeed;
   }
   
+  public void StopAll()
+  {
+    EngineAudioSource.volume = 0;
+    m_engineSpool = 0;
+    m_particleSystem.Stop();
+  }
+
   void FixedUpdate()
   {
     float thrust = Mathf.Clamp01(Input.GetAxis(ThrustInput));

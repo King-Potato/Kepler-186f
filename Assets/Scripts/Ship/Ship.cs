@@ -114,13 +114,18 @@ public class Ship : MonoBehaviour
   {
     if (Health <= 0.0f && !m_dead)
     {
+      Health = 0.0f;
       Kill();
       return;
     }
 
     if (m_dead)
     {
-      if (GetComponent<ShipControl>().enabled) GetComponent<ShipControl>().enabled = false;
+      if (GetComponent<ShipControl>().enabled)
+      {
+        GetComponent<ShipControl>().StopAll();
+        GetComponent<ShipControl>().enabled = false;
+      }
 
       m_respawnTimer -= Time.deltaTime;
 
@@ -128,6 +133,8 @@ public class Ship : MonoBehaviour
       {
         Respawn();
       }
+
+      return;
     }
 
 
