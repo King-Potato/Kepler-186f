@@ -13,6 +13,7 @@ public class Ship : Damageable
   public GameObject ExplosionEffect;
   
   ushort m_score;
+  int m_lastHit;
   float m_respawnTimer;
 
   Rigidbody2D m_rigidBody;
@@ -30,15 +31,17 @@ public class Ship : Damageable
 
   protected override void OnCollision(Collision2D collision)
   {
+    if (Health <= 0.0f)
+    {
+      ScoreManager.ModifyScore(m_lastHit, ScorePerKill);
+    }
+
     var proj = collision.gameObject.GetComponent<Projectile>();
     if (proj == null) return;
 
+    m_lastHit = proj.FiredFrom;
+
     ScoreManager.ModifyScore(proj.FiredFrom, (int)proj.Damage);
-    
-    if (Health <= 0.0f)
-    {
-      ScoreManager.ModifyScore(proj.FiredFrom, ScorePerKill);
-    }
   }
 
   void Update()
