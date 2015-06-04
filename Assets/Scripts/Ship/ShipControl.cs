@@ -33,6 +33,11 @@ public class ShipControl : MonoBehaviour
     m_particleSystem.Stop();
   }
 
+  public void StartAll()
+  {
+    m_particleSystem.Play();
+  }
+
   void FixedUpdate()
   {
     float thrust = Mathf.Clamp01(Input.GetAxis(ThrustInput));

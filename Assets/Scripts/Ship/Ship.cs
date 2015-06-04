@@ -51,6 +51,7 @@ public class Ship : MonoBehaviour
   public string FireInputName;
   public Vector2 RespawnXBoundaries;
   public Vector2 RespawnYBoundaries;
+  public GameObject ExplosionEffect;
 
   bool m_dead;
   ushort m_score;
@@ -159,6 +160,14 @@ public class Ship : MonoBehaviour
     GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
     GetComponent<Rigidbody2D>().rotation = 0.0f;
     GetComponent<ShipControl>().enabled = true;
+    GetComponent<ShipControl>().StartAll();
+
+    var renderers = GetComponentsInChildren<Renderer>();
+    foreach (var r in renderers)
+    {
+      r.material.color = Color.white;
+    }
+
     Health = StartingHealth;
     m_respawnTimer = StartingRespawnTimer;
     m_dead = false;
@@ -168,6 +177,14 @@ public class Ship : MonoBehaviour
   {
     ExplosionAudioSource.Play();
     StartRespawn();
+
+    var renderers = GetComponentsInChildren<Renderer>();
+    foreach(var r in renderers)
+    {
+      r.material.color = new Color(0.2f, 0.2f, 0.2f);
+    }
+
+    Instantiate(ExplosionEffect, transform.position, transform.rotation);
   }
 
   private void Setteam(team m_team)
