@@ -26,11 +26,8 @@ public class ZoomToFit : MonoBehaviour
     float z = -size * DistanceScale;
     if (z > -MinDistance) z = -MinDistance;
 
-    transform.position = new Vector3(bounds.center.x, bounds.center.y, z);
+    var targetPos = new Vector3(bounds.center.x, bounds.center.y, z);
 
-    Debug.DrawLine(new Vector3(bounds.xMin, bounds.yMin), new Vector3(bounds.xMin, bounds.yMax));
-    Debug.DrawLine(new Vector3(bounds.xMax, bounds.yMin), new Vector3(bounds.xMax, bounds.yMax));
-    Debug.DrawLine(new Vector3(bounds.xMin, bounds.yMin), new Vector3(bounds.xMax, bounds.yMin));
-    Debug.DrawLine(new Vector3(bounds.xMin, bounds.yMax), new Vector3(bounds.xMax, bounds.yMax));
+    transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 4.0f);
   }
 }
