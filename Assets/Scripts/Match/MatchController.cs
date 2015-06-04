@@ -29,7 +29,7 @@ public class MatchController : MonoBehaviour
       if (m_TimeRemaining <= 0.0f)
       {
         Active = false;
-        Restart();
+        GameState.CurrentState = GameState.State.Results;
       }
 
       TimeLeftText.text = "Time Left: " + m_TimeRemaining.ToString();
