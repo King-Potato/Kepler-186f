@@ -56,6 +56,8 @@ public class Ship : MonoBehaviour
 
   Rigidbody2D m_rigidBody;
 
+  public AudioSource ExplosionAudioSource;
+
   void Start()
   {
     m_health = StartingHealth;
@@ -112,7 +114,7 @@ public class Ship : MonoBehaviour
   {
     if (m_health <= 0.0f)
     {
-      Respawn();
+      Kill();
       return;
     }
 
@@ -137,6 +139,7 @@ public class Ship : MonoBehaviour
   public void Kill()
   {
     Debug.Log("Player been killed.");
+    ExplosionAudioSource.Play();
     Respawn();
   }
 
