@@ -22,10 +22,24 @@ public class Ship : MonoBehaviour
 
   void OnCollisionEnter2D(Collision2D collider)
   {
-    if(collider.gameObject.tag == "Projectile")
+    if (collider.gameObject.tag == "Projectile")
     {
+      Debug.Log("Hit by projectile");
       m_health -= collider.gameObject.GetComponent<Projectile>().Damage;
       Destroy(collider.gameObject);
+      Debug.Log("New Health" + m_health);
+    }
+    else
+    {
+      var impactMagnitude = collider.relativeVelocity.magnitude;
+
+      Debug.Log("Impact Magnitude " + impactMagnitude);
+
+      if (impactMagnitude > 10.0f)
+      {
+        m_health -= impactMagnitude;
+        Debug.Log("New Health" + m_health);
+      }
     }
   }
 
