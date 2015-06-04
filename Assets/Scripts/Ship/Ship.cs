@@ -8,7 +8,7 @@ public class Ship : MonoBehaviour
 
   void Update()
   {
-    if(Input.GetButtonDown(FireInputName))
+    if(Input.GetButton(FireInputName))
     {
       Weapon.Fire();
     }
